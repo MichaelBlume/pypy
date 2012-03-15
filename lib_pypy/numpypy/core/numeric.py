@@ -1,12 +1,114 @@
 
 from _numpypy import array, ndarray, int_, float_, bool_ #, complex_# , longlong
-from _numpypy import concatenate
+from _numpypy import generic
 import math
 import sys
 import _numpypy as multiarray # ARGH
 from numpypy.core.arrayprint import array2string
 
 newaxis = None
+
+def isscalar(num):
+    """
+    Returns True if the type of `num` is a scalar type.
+
+    Parameters
+    ----------
+    num : any
+        Input argument, can be of any type and shape.
+
+    Returns
+    -------
+    val : bool
+        True if `num` is a scalar type, False if it is not.
+
+    Examples
+    --------
+    >>> np.isscalar(3.1)
+    True
+    >>> np.isscalar([3.1])
+    False
+    >>> np.isscalar(False)
+    True
+
+    """
+    if isinstance(num, generic):
+        return True
+    else:
+        return type(num) in [int, float, complex, long, bool, bytes, str, memoryview]
+
+def outer(a,b):
+    """
+    Compute the outer product of two vectors.
+
+    Given two vectors, ``a = [a0, a1, ..., aM]`` and
+    ``b = [b0, b1, ..., bN]``,
+    the outer product [1]_ is::
+
+      [[a0*b0  a0*b1 ... a0*bN ]
+       [a1*b0    .
+       [ ...          .
+       [aM*b0            aM*bN ]]
+
+    Parameters
+    ----------
+    a, b : array_like, shape (M,), (N,)
+        First and second input vectors.  Inputs are flattened if they
+        are not already 1-dimensional.
+
+    Returns
+    -------
+    out : ndarray, shape (M, N)
+        ``out[i, j] = a[i] * b[j]``
+
+    See also
+    --------
+    inner, einsum
+
+    References
+    ----------
+    .. [1] : G. H. Golub and C. F. van Loan, *Matrix Computations*, 3rd
+             ed., Baltimore, MD, Johns Hopkins University Press, 1996,
+             pg. 8.
+
+    Examples
+    --------
+    Make a (*very* coarse) grid for computing a Mandelbrot set:
+
+    >>> rl = np.outer(np.ones((5,)), np.linspace(-2, 2, 5))
+    >>> rl
+    array([[-2., -1.,  0.,  1.,  2.],
+           [-2., -1.,  0.,  1.,  2.],
+           [-2., -1.,  0.,  1.,  2.],
+           [-2., -1.,  0.,  1.,  2.],
+           [-2., -1.,  0.,  1.,  2.]])
+    >>> im = np.outer(1j*np.linspace(2, -2, 5), np.ones((5,)))
+    >>> im
+    array([[ 0.+2.j,  0.+2.j,  0.+2.j,  0.+2.j,  0.+2.j],
+           [ 0.+1.j,  0.+1.j,  0.+1.j,  0.+1.j,  0.+1.j],
+           [ 0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j],
+           [ 0.-1.j,  0.-1.j,  0.-1.j,  0.-1.j,  0.-1.j],
+           [ 0.-2.j,  0.-2.j,  0.-2.j,  0.-2.j,  0.-2.j]])
+    >>> grid = rl + im
+    >>> grid
+    array([[-2.+2.j, -1.+2.j,  0.+2.j,  1.+2.j,  2.+2.j],
+           [-2.+1.j, -1.+1.j,  0.+1.j,  1.+1.j,  2.+1.j],
+           [-2.+0.j, -1.+0.j,  0.+0.j,  1.+0.j,  2.+0.j],
+           [-2.-1.j, -1.-1.j,  0.-1.j,  1.-1.j,  2.-1.j],
+           [-2.-2.j, -1.-2.j,  0.-2.j,  1.-2.j,  2.-2.j]])
+
+    An example using a "vector" of letters:
+
+    >>> x = np.array(['a', 'b', 'c'], dtype=object)
+    >>> np.outer(x, [1, 2, 3])
+    array([[a, aa, aaa],
+           [b, bb, bbb],
+           [c, cc, ccc]], dtype=object)
+
+    """
+    a = asarray(a)
+    b = asarray(b)
+    return a.ravel()[:,newaxis]*b.ravel()[newaxis,:]
 
 def asanyarray(a, dtype=None, order=None, maskna=None, ownmaskna=False):
     """
