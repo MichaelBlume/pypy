@@ -1,6 +1,6 @@
 
 from _numpypy import array, ndarray, int_, float_, bool_ #, complex_# , longlong
-from _numpypy import generic
+from _numpypy import generic, zeros
 import math
 import sys
 import _numpypy as multiarray # ARGH
