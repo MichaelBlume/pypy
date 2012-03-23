@@ -203,6 +203,11 @@ def calc_new_strides(new_shape, old_shape, old_strides, order):
     last_step = 1
     oldI = 0
     new_strides = []
+    # If either shape contains zero, there's no data.
+    if 0 in old_shape:
+        if 0 not in new_shape:
+            return None
+        return (0,) * len(new_shape)
     if order == 'F':
         for i in range(len(old_shape)):
             steps.append(old_strides[i] / last_step)
