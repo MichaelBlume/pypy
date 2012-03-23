@@ -362,41 +362,7 @@ class AppTestKron(BaseNumpyAppTest):
         assert_equal(type(kron(ma,a)), myarray)
 
 
-class AppTestTile(BaseNumpyAppTest):
-    def test_basic(self):
-        from numpypy import array
-        from numpypy.lib.shape_base import tile
-        a = array([0,1,2])
-        b = [[1,2],[3,4]]
-        assert_equal(tile(a,2), [0,1,2,0,1,2])
-        assert_equal(tile(a,(2,2)), [[0,1,2,0,1,2],[0,1,2,0,1,2]])
-        assert_equal(tile(a,(1,2)), [[0,1,2,0,1,2]])
-        assert_equal(tile(b, 2), [[1,2,1,2],[3,4,3,4]])
-        assert_equal(tile(b,(2,1)),[[1,2],[3,4],[1,2],[3,4]])
-        assert_equal(tile(b,(2,2)),[[1,2,1,2],[3,4,3,4],
-                                    [1,2,1,2],[3,4,3,4]])
-
-    def test_empty(self):
-        from numpypy import array
-        from numpypy.lib.shape_base import tile
-        a = array([[[]]])
-        d = tile(a,(3,2,5)).shape
-        assert_equal(d,(3,2,0))
-
-    def test_kroncompare(self):
-        import numpy.random as nr
-        from numpypy import ones
-        from numpypy.lib.shape_base import tile, kron
-        reps=[(2,),(1,2),(2,1),(2,2),(2,3,2),(3,2)]
-        shape=[(3,),(2,3),(3,4,3),(3,2,3),(4,3,2,4),(2,2)]
-        for s in shape:
-            b = nr.randint(0,10,size=s)
-            for r in reps:
-                a = ones(r, b.dtype)
-                large = tile(b, r)
-                klarge = kron(a, b)
-                assert_equal(large, klarge)
-
+# Leaving out tile tests until we can get ndarray.repeat
 
 # Utility
 def compare_results(res,desired):
