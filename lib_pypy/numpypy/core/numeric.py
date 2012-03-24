@@ -5,6 +5,7 @@ import math
 import sys
 import _numpypy as multiarray # ARGH
 from numpypy.core.arrayprint import array2string
+from numpypy.core.fromnumeric import shape
 
 newaxis = None
 
