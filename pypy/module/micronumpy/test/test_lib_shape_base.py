@@ -343,23 +343,7 @@ class AppTestSqueeze(BaseNumpyAppTest):
         assert_equal(type(res), ndarray)
 
 
-class AppTestKron(BaseNumpyAppTest):
-    def test_return_type(self):
-        from numpypy import ndarray, matrix, ones, asmatrix
-        from numpypy.lib.shape_base import kron
-        a = ones([2,2])
-        m = asmatrix(a)
-        assert_equal(type(kron(a,a)), ndarray)
-        assert_equal(type(kron(m,m)), matrix)
-        assert_equal(type(kron(a,m)), matrix)
-        assert_equal(type(kron(m,a)), matrix)
-        class myarray(ndarray):
-            __array_priority__ = 0.0
-        ma = myarray(a.shape, a.dtype, a.data)
-        assert_equal(type(kron(a,a)), ndarray)
-        assert_equal(type(kron(ma,ma)), myarray)
-        assert_equal(type(kron(a,ma)), ndarray)
-        assert_equal(type(kron(ma,a)), myarray)
+# Leaving out kron tests until we can do matrices
 
 
 # Leaving out tile tests until we can get ndarray.repeat
